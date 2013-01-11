@@ -1,1 +1,17 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Maven temporary directory #
+
 target/
+
+# Eclipse temporary files #
+
+.settings/
+.project
+.classpath
+
