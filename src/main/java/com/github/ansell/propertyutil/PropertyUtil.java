@@ -22,7 +22,18 @@ public class PropertyUtil
      */
     public static final String DEFAULT_PROPERTIES_BUNDLE_NAME = "oas";
     
-    private static String PROPERTIES_BUNDLE_NAME = DEFAULT_PROPERTIES_BUNDLE_NAME;
+    private static String PROPERTIES_BUNDLE_NAME = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
+    
+    /**
+     * Internal property cache, used if and when users indicate that they want to use the cache.
+     */
+    private static final Map<String, String> INTERNAL_PROPERTY_CACHE = new HashMap<String, String>();
+    
+    /**
+     * A constant to indicate the default preference for caching properties, or not caching
+     * properties.
+     */
+    public static final boolean DEFAULT_USE_CACHE = true;
     
     /**
      * Checks for the key first in the system vm properties, then in the localisation properties
@@ -103,25 +114,14 @@ public class PropertyUtil
         return result;
     }
     
-    /**
-     * Internal property cache, used if and when users indicate that they want to use the cache.
-     */
-    private static final Map<String, String> INTERNAL_PROPERTY_CACHE = new HashMap<String, String>();
-    
-    public static final void setPropertyBundleName(String newPropertyBundleName)
+    public static final void setPropertyBundleName(final String newPropertyBundleName)
     {
         if(newPropertyBundleName == null || newPropertyBundleName.isEmpty())
         {
-            PROPERTIES_BUNDLE_NAME = newPropertyBundleName;
+            PropertyUtil.PROPERTIES_BUNDLE_NAME = newPropertyBundleName;
         }
         
-        INTERNAL_PROPERTY_CACHE.clear();
+        PropertyUtil.INTERNAL_PROPERTY_CACHE.clear();
     }
-
-    /**
-     * A constant to indicate the default preference for caching properties, or not caching
-     * properties.
-     */
-    public static final boolean DEFAULT_USE_CACHE = true;
     
 }
