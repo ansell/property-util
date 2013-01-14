@@ -49,8 +49,29 @@ public class PropertyUtil
      * @param defaultValue
      *            The value to return if the key does not match any configured value
      * @return the string matching the key
+     * @deprecated Use {@link #get(String,String)} instead
      */
     public static String getProperty(final String key, final String defaultValue)
+    {
+        return get(key, defaultValue);
+    }
+
+    /**
+     * Checks for the key first in the system vm properties, then in the localisation properties
+     * file, by default, "oas.properties", then uses the defaultValue if the location is still
+     * unknown.
+     * 
+     * By default, this method uses the value of PropertyUtils.DEFAULT_USE_CACHE to determine
+     * whether to cache results.
+     * 
+     * @param key
+     *            The key to check for first in system vm properties and then in the localisation
+     *            properties file
+     * @param defaultValue
+     *            The value to return if the key does not match any configured value
+     * @return the string matching the key
+     */
+    public static String get(final String key, final String defaultValue)
     {
         return PropertyUtil.getSystemOrPropertyString(key, defaultValue, PropertyUtil.DEFAULT_USE_CACHE);
     }
