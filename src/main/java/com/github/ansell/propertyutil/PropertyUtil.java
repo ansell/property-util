@@ -137,6 +137,12 @@ public class PropertyUtil
             }
         }
         
+        // if the property didn't exist, replace it with the default value
+        if(result == null)
+        {
+            result = defaultValue;
+        }
+        
         // Do not create anything in the cache if they show an intention not to use the cache
         if(useCache && result != null)
         {
@@ -146,12 +152,6 @@ public class PropertyUtil
             {
                 PropertyUtil.INTERNAL_PROPERTY_CACHE.put(key, result);
             }
-        }
-        
-        // if the property didn't exist, replace it with the default value
-        if(result == null)
-        {
-            result = defaultValue;
         }
         
         return result;
