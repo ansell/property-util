@@ -167,6 +167,10 @@ public class PropertyUtil
     {
         if(newPropertyBundleName == null || newPropertyBundleName.isEmpty())
         {
+            PropertyUtil.PROPERTIES_BUNDLE_NAME = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
+        }
+        else
+        {
             PropertyUtil.PROPERTIES_BUNDLE_NAME = newPropertyBundleName;
         }
         
