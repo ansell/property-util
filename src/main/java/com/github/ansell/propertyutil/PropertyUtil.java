@@ -87,6 +87,15 @@ public class PropertyUtil
     }
     
     /**
+     * 
+     * @return The property bundle name to be used for fetching properties.
+     */
+    public static String getPropertyBundleName()
+    {
+        return PropertyUtil.PROPERTIES_BUNDLE_NAME;
+    }
+    
+    /**
      * Checks for the key first in the system vm properties, then in the localisation properties
      * file, by default, "oas.properties", then uses the defaultValue if the location is still
      * unknown.
