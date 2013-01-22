@@ -28,9 +28,9 @@ public class PropertyUtilPerformanceTest
         Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
-        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltest");
+        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
-        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltest",
+        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 PropertyUtil.getPropertyBundleName());
         
         // clear property cache before and after tests

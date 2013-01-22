@@ -33,12 +33,13 @@ public class PropertyUtilTest
         Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
-        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltest");
+        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
-        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltest",
+        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 PropertyUtil.getPropertyBundleName());
         
-        Assert.assertNotNull("Test Resource was not found", ResourceBundle.getBundle("com.github.ansell.propertyutil.test.propertyutiltest"));
+        Assert.assertNotNull("Test Resource was not found",
+                ResourceBundle.getBundle("com.github.ansell.propertyutil.test.propertyutiltestbundle"));
     }
     
     /**
@@ -182,9 +183,9 @@ public class PropertyUtilTest
     @Test
     public synchronized final void testSetPropertyBundleName()
     {
-        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltest");
+        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
-        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltest",
+        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 PropertyUtil.getPropertyBundleName());
         
         // make sure we are using our custom test bundle
@@ -192,9 +193,9 @@ public class PropertyUtilTest
         
         Assert.assertEquals(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME, PropertyUtil.getPropertyBundleName());
         
-        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltest");
+        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
-        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltest",
+        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 PropertyUtil.getPropertyBundleName());
     }
 }
