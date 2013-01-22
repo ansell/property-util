@@ -37,6 +37,14 @@ public class PropertyUtil
     public static final boolean DEFAULT_USE_CACHE = true;
     
     /**
+     * Clears the internal property cache.
+     */
+    public static final void clearPropertyCache()
+    {
+        PropertyUtil.INTERNAL_PROPERTY_CACHE.clear();
+    }
+    
+    /**
      * Checks for the key first in the system vm properties, then in the localisation properties
      * file, by default, "oas.properties", then uses the defaultValue if the location is still
      * unknown.
@@ -140,6 +148,12 @@ public class PropertyUtil
         return result;
     }
     
+    /**
+     * Sets the property bundle name to be used for fetching properties to a new value.
+     * 
+     * @param newPropertyBundleName
+     *            The new property bundle name to use for fetching properties.
+     */
     public static final void setPropertyBundleName(final String newPropertyBundleName)
     {
         if(newPropertyBundleName == null || newPropertyBundleName.isEmpty())
