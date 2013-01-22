@@ -3,10 +3,10 @@
  */
 package com.github.ansell.propertyutil;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author Peter Ansell p_ansell@yahoo.com
@@ -27,7 +27,8 @@ public class PropertyUtil
     /**
      * Internal property cache, used if and when users indicate that they want to use the cache.
      */
-    private static final Map<String, String> INTERNAL_PROPERTY_CACHE = new HashMap<String, String>();
+    private static final ConcurrentMap<String, String> INTERNAL_PROPERTY_CACHE =
+            new ConcurrentHashMap<String, String>();
     
     /**
      * A constant to indicate the default preference for caching properties, or not caching
@@ -49,13 +50,12 @@ public class PropertyUtil
      * @param defaultValue
      *            The value to return if the key does not match any configured value
      * @return the string matching the key
-     * @deprecated Use {@link #get(String,String)} instead
      */
-    public static String getProperty(final String key, final String defaultValue)
+    public static String get(final String key, final String defaultValue)
     {
-        return get(key, defaultValue);
+        return PropertyUtil.getSystemOrPropertyString(key, defaultValue, PropertyUtil.DEFAULT_USE_CACHE);
     }
-
+    
     /**
      * Checks for the key first in the system vm properties, then in the localisation properties
      * file, by default, "oas.properties", then uses the defaultValue if the location is still
@@ -70,10 +70,12 @@ public class PropertyUtil
      * @param defaultValue
      *            The value to return if the key does not match any configured value
      * @return the string matching the key
+     * @deprecated Use {@link #get(String,String)} instead
      */
-    public static String get(final String key, final String defaultValue)
+    @Deprecated
+    public static String getProperty(final String key, final String defaultValue)
     {
-        return PropertyUtil.getSystemOrPropertyString(key, defaultValue, PropertyUtil.DEFAULT_USE_CACHE);
+        return PropertyUtil.get(key, defaultValue);
     }
     
     /**
@@ -118,18 +120,21 @@ public class PropertyUtil
             }
         }
         
+        // Do not create anything in the cache if they show an intention not to use the cache
+        if(useCache && result != null)
+        {
+            final String putIfAbsent = PropertyUtil.INTERNAL_PROPERTY_CACHE.putIfAbsent(key, result);
+            
+            if(putIfAbsent != null && !putIfAbsent.equals(result))
+            {
+                PropertyUtil.INTERNAL_PROPERTY_CACHE.put(key, result);
+            }
+        }
+        
         // if the property didn't exist, replace it with the default value
         if(result == null)
         {
             result = defaultValue;
-        }
-        
-        // Do not create anything in the cache if they show an intention not to use the cache
-        // FIXME: Should we be caching defaultValue? Ie, should we move this before the preceding
-        // if(result == null) block
-        if(useCache)
-        {
-            PropertyUtil.INTERNAL_PROPERTY_CACHE.put(key, result);
         }
         
         return result;
