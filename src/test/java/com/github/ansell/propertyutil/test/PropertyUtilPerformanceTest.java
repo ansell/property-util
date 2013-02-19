@@ -52,7 +52,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceCachingExistingPropertiesNonThreadedNoDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -66,7 +66,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceCachingExistingPropertiesNonThreadedWithDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -82,7 +82,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceCachingMissingPropertiesNonThreadedNoDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -95,7 +95,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceCachingMissingPropertiesNonThreadedWithDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -111,7 +111,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceNonCachingExistingPropertiesNonThreadedNoDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -125,7 +125,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceNonCachingExistingPropertiesNonThreadedWithDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -141,7 +141,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceNonCachingMissingPropertiesNonThreadedNoDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
@@ -155,7 +155,7 @@ public class PropertyUtilPerformanceTest
     @Test
     public synchronized final void testPerformanceNonCachingMissingPropertiesNonThreadedWithDefault()
     {
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100000; i++)
         {
             final int value = i % 100;
             
