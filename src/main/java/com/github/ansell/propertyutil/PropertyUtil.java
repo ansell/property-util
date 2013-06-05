@@ -14,6 +14,19 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class PropertyUtil
 {
+    private static PropertyUtil instance;
+    
+    private boolean useCache = DEFAULT_USE_CACHE;
+    private String bundleName = DEFAULT_PROPERTIES_BUNDLE_NAME;
+    
+    public PropertyUtil()
+    {
+    }
+    
+    public PropertyUtil(String bundleName)
+    {
+        this.bundleName = bundleName;
+    }
     
     /**
      * Defines oas.properties as the properties resource bundle name.
@@ -22,13 +35,20 @@ public class PropertyUtil
      */
     public static final String DEFAULT_PROPERTIES_BUNDLE_NAME = "oas";
     
-    private static String PROPERTIES_BUNDLE_NAME = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
+    static
+    {
+        instance = new PropertyUtil();
+    }
+    
+    public static PropertyUtil getInstance()
+    {
+        return instance;
+    }
     
     /**
      * Internal property cache, used if and when users indicate that they want to use the cache.
      */
-    private static final ConcurrentMap<String, String> INTERNAL_PROPERTY_CACHE =
-            new ConcurrentHashMap<String, String>();
+    private final ConcurrentMap<String, String> INTERNAL_PROPERTY_CACHE = new ConcurrentHashMap<String, String>();
     
     /**
      * A constant to indicate the default preference for caching properties, or not caching
@@ -39,9 +59,9 @@ public class PropertyUtil
     /**
      * Clears the internal property cache.
      */
-    public static final void clearPropertyCache()
+    public final void clearPropertyCache()
     {
-        PropertyUtil.INTERNAL_PROPERTY_CACHE.clear();
+        this.INTERNAL_PROPERTY_CACHE.clear();
     }
     
     /**
@@ -59,40 +79,18 @@ public class PropertyUtil
      *            The value to return if the key does not match any configured value
      * @return the string matching the key
      */
-    public static String get(final String key, final String defaultValue)
+    public String get(final String key, final String defaultValue)
     {
-        return PropertyUtil.getSystemOrPropertyString(key, defaultValue, PropertyUtil.DEFAULT_USE_CACHE);
-    }
-    
-    /**
-     * Checks for the key first in the system vm properties, then in the localisation properties
-     * file, by default, "oas.properties", then uses the defaultValue if the location is still
-     * unknown.
-     * 
-     * By default, this method uses the value of PropertyUtils.DEFAULT_USE_CACHE to determine
-     * whether to cache results.
-     * 
-     * @param key
-     *            The key to check for first in system vm properties and then in the localisation
-     *            properties file
-     * @param defaultValue
-     *            The value to return if the key does not match any configured value
-     * @return the string matching the key
-     * @deprecated Use {@link #get(String,String)} instead
-     */
-    @Deprecated
-    public static String getProperty(final String key, final String defaultValue)
-    {
-        return PropertyUtil.get(key, defaultValue);
+        return this.getSystemOrPropertyString(key, defaultValue, useCache);
     }
     
     /**
      * 
      * @return The property bundle name to be used for fetching properties.
      */
-    public static String getPropertyBundleName()
+    public String getPropertyBundleName()
     {
-        return PropertyUtil.PROPERTIES_BUNDLE_NAME;
+        return bundleName;
     }
     
     /**
@@ -110,12 +108,12 @@ public class PropertyUtil
      *            way, will be put into the cache
      * @return the string matching the key
      */
-    public static String getSystemOrPropertyString(final String key, final String defaultValue, final boolean useCache)
+    public String getSystemOrPropertyString(final String key, final String defaultValue, final boolean useCache)
     {
         // if they want to use the cache, and the cache contains this key, return the value
-        if(useCache && PropertyUtil.INTERNAL_PROPERTY_CACHE.containsKey(key))
+        if(useCache && this.INTERNAL_PROPERTY_CACHE.containsKey(key))
         {
-            return PropertyUtil.INTERNAL_PROPERTY_CACHE.get(key);
+            return this.INTERNAL_PROPERTY_CACHE.get(key);
         }
         
         // Try to get the property from the system configuration, for example, from, 'java
@@ -128,7 +126,7 @@ public class PropertyUtil
             {
                 // If we were unsuccessful in the cache and the system properties, try to fetch from
                 // oas.properties file on the class path
-                result = ResourceBundle.getBundle(PropertyUtil.PROPERTIES_BUNDLE_NAME).getString(key);
+                result = ResourceBundle.getBundle(this.bundleName).getString(key);
             }
             catch(final MissingResourceException mre)
             {
@@ -146,11 +144,11 @@ public class PropertyUtil
         // Do not create anything in the cache if they show an intention not to use the cache
         if(useCache && result != null)
         {
-            final String putIfAbsent = PropertyUtil.INTERNAL_PROPERTY_CACHE.putIfAbsent(key, result);
+            final String putIfAbsent = this.INTERNAL_PROPERTY_CACHE.putIfAbsent(key, result);
             
             if(putIfAbsent != null && !putIfAbsent.equals(result))
             {
-                PropertyUtil.INTERNAL_PROPERTY_CACHE.put(key, result);
+                this.INTERNAL_PROPERTY_CACHE.put(key, result);
             }
         }
         
@@ -163,18 +161,18 @@ public class PropertyUtil
      * @param newPropertyBundleName
      *            The new property bundle name to use for fetching properties.
      */
-    public static final void setPropertyBundleName(final String newPropertyBundleName)
+    public void setPropertyBundleName(final String newPropertyBundleName)
     {
         if(newPropertyBundleName == null || newPropertyBundleName.isEmpty())
         {
-            PropertyUtil.PROPERTIES_BUNDLE_NAME = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
+            bundleName = DEFAULT_PROPERTIES_BUNDLE_NAME;
         }
         else
         {
-            PropertyUtil.PROPERTIES_BUNDLE_NAME = newPropertyBundleName;
+            bundleName = newPropertyBundleName;
         }
         
-        PropertyUtil.INTERNAL_PROPERTY_CACHE.clear();
+        this.INTERNAL_PROPERTY_CACHE.clear();
     }
     
 }

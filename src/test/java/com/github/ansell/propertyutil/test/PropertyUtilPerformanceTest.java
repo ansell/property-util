@@ -18,23 +18,26 @@ import com.github.ansell.propertyutil.PropertyUtil;
 public class PropertyUtilPerformanceTest
 {
     
+    private PropertyUtil propertyUtil;
+    
     /**
      * @throws java.lang.Exception
      */
     @Before
     public synchronized void setUp() throws Exception
     {
+        this.propertyUtil = new PropertyUtil();
         // verify that the default is to use caching
         Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
-        PropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
+        propertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
-                PropertyUtil.getPropertyBundleName());
+                propertyUtil.getPropertyBundleName());
         
         // clear property cache before and after tests
-        PropertyUtil.clearPropertyCache();
+        propertyUtil.clearPropertyCache();
     }
     
     /**
@@ -44,9 +47,9 @@ public class PropertyUtilPerformanceTest
     public synchronized void tearDown() throws Exception
     {
         // clear property cache before and after tests
-        PropertyUtil.clearPropertyCache();
+        propertyUtil.clearPropertyCache();
         
-        PropertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
+        propertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
     }
     
     @Test
@@ -57,7 +60,7 @@ public class PropertyUtilPerformanceTest
             final int value = i % 100;
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue", null,
+                    propertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue", null,
                             true);
             Assert.assertEquals(propertyString, "Test Performance Property " + value);
         }
@@ -73,7 +76,7 @@ public class PropertyUtilPerformanceTest
             final String defaultValue = Integer.toHexString(3127 + value);
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue",
+                    propertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue",
                             defaultValue, true);
             Assert.assertEquals(propertyString, "Test Performance Property " + value);
         }
@@ -87,7 +90,7 @@ public class PropertyUtilPerformanceTest
             final int value = i % 100;
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.missing.property" + value + "randomvalue", null, true);
+                    propertyUtil.getSystemOrPropertyString("test.missing.property" + value + "randomvalue", null, true);
             Assert.assertNull(propertyString);
         }
     }
@@ -102,7 +105,7 @@ public class PropertyUtilPerformanceTest
             final String defaultValue = Integer.toHexString(3127 + value);
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.missing.property" + value + "randomvalue",
+                    propertyUtil.getSystemOrPropertyString("test.missing.property" + value + "randomvalue",
                             defaultValue, true);
             Assert.assertEquals(propertyString, Integer.toHexString(3127 + value));
         }
@@ -116,7 +119,7 @@ public class PropertyUtilPerformanceTest
             final int value = i % 100;
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue", null,
+                    propertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue", null,
                             false);
             Assert.assertEquals(propertyString, "Test Performance Property " + value);
         }
@@ -132,7 +135,7 @@ public class PropertyUtilPerformanceTest
             final String defaultValue = Integer.toHexString(3127 + value);
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue",
+                    propertyUtil.getSystemOrPropertyString("test.performance.property" + value + "randomvalue",
                             defaultValue, false);
             Assert.assertEquals(propertyString, "Test Performance Property " + value);
         }
@@ -146,7 +149,7 @@ public class PropertyUtilPerformanceTest
             final int value = i % 100;
             
             final String propertyString =
-                    PropertyUtil
+                    propertyUtil
                             .getSystemOrPropertyString("test.missing.property" + value + "randomvalue", null, false);
             Assert.assertNull(propertyString);
         }
@@ -162,7 +165,7 @@ public class PropertyUtilPerformanceTest
             final String defaultValue = Integer.toHexString(3127 + value);
             
             final String propertyString =
-                    PropertyUtil.getSystemOrPropertyString("test.missing.property" + value + "randomvalue",
+                    propertyUtil.getSystemOrPropertyString("test.missing.property" + value + "randomvalue",
                             defaultValue, false);
             Assert.assertEquals(propertyString, Integer.toHexString(3127 + value));
         }

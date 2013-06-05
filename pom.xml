@@ -10,7 +10,7 @@
 
 	<groupId>com.github.ansell.property-util</groupId>
 	<artifactId>property-util</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Java Property Utils</name>
 	<description>A small utility for accessing properties in java property bundles.</description>
