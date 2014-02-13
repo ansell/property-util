@@ -133,20 +133,12 @@ public class PropertyUtil
         
         if(result == null)
         {
-            try
+            // If we were unsuccessful in the cache and the system properties, try to fetch from
+            // properties file on the class path
+            final ResourceBundle nextBundle = this.getBundle();
+            if(nextBundle != null)
             {
-                // If we were unsuccessful in the cache and the system properties, try to fetch from
-                // properties file on the class path
-                final ResourceBundle nextBundle = this.getBundle();
-                if(nextBundle != null)
-                {
-                    result = nextBundle.getString(key);
-                }
-            }
-            catch(final MissingResourceException mre)
-            {
-                // Do nothing, will use defaultValue in this case
-                ;
+                result = nextBundle.getString(key);
             }
         }
         
@@ -205,8 +197,16 @@ public class PropertyUtil
                 result = this.bundle;
                 if(this.bundle == null)
                 {
-                    // Try to resolve bundle on classpath
-                    this.bundle = ResourceBundle.getBundle(this.bundleName);
+                    try
+                    {
+                        // Try to resolve bundle on classpath
+                        this.bundle = ResourceBundle.getBundle(this.bundleName);
+                    }
+                    catch(final MissingResourceException mre)
+                    {
+                        // Do nothing, will try other options
+                        ;
+                    }
                 }
                 if(this.bundle == null)
                 {
@@ -228,6 +228,11 @@ public class PropertyUtil
                             catch(final MalformedURLException e)
                             {
                                 
+                            }
+                            catch(final MissingResourceException mre)
+                            {
+                                // Do nothing, will try other options
+                                ;
                             }
                         }
                     }
@@ -252,6 +257,11 @@ public class PropertyUtil
                             catch(final MalformedURLException e)
                             {
                                 
+                            }
+                            catch(final MissingResourceException mre)
+                            {
+                                // Do nothing, will try other options
+                                ;
                             }
                         }
                     }
