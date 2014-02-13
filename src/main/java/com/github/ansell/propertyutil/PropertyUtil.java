@@ -23,11 +23,11 @@ import java.util.concurrent.ConcurrentMap;
 public class PropertyUtil
 {
     /**
-     * Defines oas.properties as the properties resource bundle name.
+     * Defines podd.properties as the properties resource bundle name.
      * 
-     * Default value: oas
+     * Default value: podd
      */
-    public static final String DEFAULT_PROPERTIES_BUNDLE_NAME = "oas";
+    public static final String DEFAULT_PROPERTIES_BUNDLE_NAME = "podd";
     
     /**
      * A constant to indicate the default preference for caching properties, or not caching
