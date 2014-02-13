@@ -205,10 +205,12 @@ public class PropertyUtil
                 result = this.bundle;
                 if(this.bundle == null)
                 {
+                    // Try to resolve bundle on classpath
                     this.bundle = ResourceBundle.getBundle(this.bundleName);
                 }
                 if(this.bundle == null)
                 {
+                    // Try to resolve bundle in the current user directory
                     final String userDir = System.getProperty("user.dir");
                     if(userDir != null)
                     {
@@ -232,6 +234,7 @@ public class PropertyUtil
                 }
                 if(this.bundle == null)
                 {
+                    // Try to resolve bundle in the current user home directory
                     final String userHome = System.getProperty("user.home");
                     if(userHome != null)
                     {
