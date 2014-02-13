@@ -138,7 +138,15 @@ public class PropertyUtil
             final ResourceBundle nextBundle = this.getBundle();
             if(nextBundle != null)
             {
-                result = nextBundle.getString(key);
+                try
+                {
+                    result = nextBundle.getString(key);
+                }
+                catch(MissingResourceException e)
+                {
+                    // Do nothing, will use default
+                    ;
+                }
             }
         }
         
