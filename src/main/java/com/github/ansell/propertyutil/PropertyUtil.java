@@ -3,7 +3,13 @@
  */
 package com.github.ansell.propertyutil;
 
-import java.util.Arrays;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
@@ -48,7 +54,7 @@ public class PropertyUtil
     /**
      * Internal property cache, used if and when users indicate that they want to use the cache.
      */
-    private final ConcurrentMap<String, String> INTERNAL_PROPERTY_CACHE = new ConcurrentHashMap<String, String>();
+    private final ConcurrentMap<String, String> cache = new ConcurrentHashMap<String, String>();
     
     private boolean useCache = PropertyUtil.DEFAULT_USE_CACHE;
     
@@ -66,7 +72,7 @@ public class PropertyUtil
      */
     public final void clearPropertyCache()
     {
-        this.INTERNAL_PROPERTY_CACHE.clear();
+        this.cache.clear();
     }
     
     /**
@@ -116,9 +122,9 @@ public class PropertyUtil
     public String getSystemOrPropertyString(final String key, final String defaultValue, final boolean useCache)
     {
         // if they want to use the cache, and the cache contains this key, return the value
-        if(useCache && this.INTERNAL_PROPERTY_CACHE.containsKey(key))
+        if(useCache && this.cache.containsKey(key))
         {
-            return this.INTERNAL_PROPERTY_CACHE.get(key);
+            return this.cache.get(key);
         }
         
         // Try to get the property from the system configuration, for example, from, 'java
@@ -130,8 +136,12 @@ public class PropertyUtil
             try
             {
                 // If we were unsuccessful in the cache and the system properties, try to fetch from
-                // oas.properties file on the class path
-                result = this.getBundle().getString(key);
+                // properties file on the class path
+                final ResourceBundle nextBundle = this.getBundle();
+                if(nextBundle != null)
+                {
+                    result = nextBundle.getString(key);
+                }
             }
             catch(final MissingResourceException mre)
             {
@@ -139,9 +149,6 @@ public class PropertyUtil
                 ;
             }
         }
-        
-        final Control control = Control.getControl(Arrays.asList("java.properties"));
-        final ResourceBundle next = ResourceBundle.getBundle(this.bundleName, control);
         
         // if the property didn't exist, replace it with the default value
         if(result == null)
@@ -152,11 +159,12 @@ public class PropertyUtil
         // Do not create anything in the cache if they show an intention not to use the cache
         if(useCache && result != null)
         {
-            final String putIfAbsent = this.INTERNAL_PROPERTY_CACHE.putIfAbsent(key, result);
+            final String putIfAbsent = this.cache.putIfAbsent(key, result);
             
+            // Last call wins
             if(putIfAbsent != null && !putIfAbsent.equals(result))
             {
-                this.INTERNAL_PROPERTY_CACHE.put(key, result);
+                this.cache.put(key, result);
             }
         }
         
@@ -180,7 +188,7 @@ public class PropertyUtil
             this.bundleName = newPropertyBundleName;
         }
         
-        this.INTERNAL_PROPERTY_CACHE.clear();
+        this.cache.clear();
         synchronized(this)
         {
             this.bundle = null;
@@ -198,6 +206,52 @@ public class PropertyUtil
                 if(this.bundle == null)
                 {
                     this.bundle = ResourceBundle.getBundle(this.bundleName);
+                }
+                if(this.bundle == null)
+                {
+                    final String userDir = System.getProperty("user.dir");
+                    if(userDir != null)
+                    {
+                        final Path userDirPath = Paths.get(userDir);
+                        if(Files.exists(userDirPath))
+                        {
+                            try
+                            {
+                                final URL[] urls = { userDirPath.toUri().toURL() };
+                                final ClassLoader loader = new URLClassLoader(urls);
+                                this.bundle =
+                                        ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
+                                                Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
+                            }
+                            catch(final MalformedURLException e)
+                            {
+                                
+                            }
+                        }
+                    }
+                }
+                if(this.bundle == null)
+                {
+                    final String userHome = System.getProperty("user.home");
+                    if(userHome != null)
+                    {
+                        final Path userHomePath = Paths.get(userHome);
+                        if(Files.exists(userHomePath))
+                        {
+                            try
+                            {
+                                final URL[] urls = { userHomePath.toUri().toURL() };
+                                final ClassLoader loader = new URLClassLoader(urls);
+                                this.bundle =
+                                        ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
+                                                Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
+                            }
+                            catch(final MalformedURLException e)
+                            {
+                                
+                            }
+                        }
+                    }
                 }
                 result = this.bundle;
             }
