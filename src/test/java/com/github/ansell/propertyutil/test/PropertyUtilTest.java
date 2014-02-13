@@ -33,7 +33,7 @@ public class PropertyUtilTest
         this.testPropertyUtil.clearPropertyCache();
         
         // verify that the default is to use caching
-        Assert.assertTrue(testPropertyUtil.DEFAULT_USE_CACHE);
+        Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
         testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
@@ -54,7 +54,7 @@ public class PropertyUtilTest
         // clear property cache before and after tests
         testPropertyUtil.clearPropertyCache();
         
-        testPropertyUtil.setPropertyBundleName(testPropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
+        testPropertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
     }
     
     @Test
@@ -196,7 +196,7 @@ public class PropertyUtilTest
         // make sure we are using our custom test bundle
         testPropertyUtil.setPropertyBundleName(null);
         
-        Assert.assertEquals(testPropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME, testPropertyUtil.getPropertyBundleName());
+        Assert.assertEquals(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME, testPropertyUtil.getPropertyBundleName());
         
         testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
