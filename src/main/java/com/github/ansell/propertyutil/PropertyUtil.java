@@ -41,7 +41,7 @@ public class PropertyUtil
         return PropertyUtil.instance;
     }
     
-    private ResourceBundle bundle;
+    private volatile ResourceBundle bundle;
     
     private String bundleName = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
     
@@ -54,13 +54,11 @@ public class PropertyUtil
     
     public PropertyUtil()
     {
-        this(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
     }
     
     public PropertyUtil(final String bundleName)
     {
         this.bundleName = bundleName;
-        this.bundle = ResourceBundle.getBundle(this.bundleName);
     }
     
     /**
@@ -133,7 +131,7 @@ public class PropertyUtil
             {
                 // If we were unsuccessful in the cache and the system properties, try to fetch from
                 // oas.properties file on the class path
-                result = this.bundle.getString(key);
+                result = this.getBundle().getString(key);
             }
             catch(final MissingResourceException mre)
             {
@@ -183,7 +181,27 @@ public class PropertyUtil
         }
         
         this.INTERNAL_PROPERTY_CACHE.clear();
-        this.bundle = ResourceBundle.getBundle(this.bundleName);
+        synchronized(this)
+        {
+            this.bundle = null;
+        }
     }
     
+    private ResourceBundle getBundle()
+    {
+        ResourceBundle result = this.bundle;
+        if(this.bundle == null)
+        {
+            synchronized(this)
+            {
+                result = this.bundle;
+                if(this.bundle == null)
+                {
+                    this.bundle = ResourceBundle.getBundle(this.bundleName);
+                }
+                result = this.bundle;
+            }
+        }
+        return result;
+    }
 }
