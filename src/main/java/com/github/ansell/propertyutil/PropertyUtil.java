@@ -3,8 +3,10 @@
  */
 package com.github.ansell.propertyutil;
 
+import java.util.Arrays;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -14,20 +16,6 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class PropertyUtil
 {
-    private static PropertyUtil instance;
-    
-    private boolean useCache = DEFAULT_USE_CACHE;
-    private String bundleName = DEFAULT_PROPERTIES_BUNDLE_NAME;
-    
-    public PropertyUtil()
-    {
-    }
-    
-    public PropertyUtil(String bundleName)
-    {
-        this.bundleName = bundleName;
-    }
-    
     /**
      * Defines oas.properties as the properties resource bundle name.
      * 
@@ -35,26 +23,45 @@ public class PropertyUtil
      */
     public static final String DEFAULT_PROPERTIES_BUNDLE_NAME = "oas";
     
+    /**
+     * A constant to indicate the default preference for caching properties, or not caching
+     * properties.
+     */
+    public static final boolean DEFAULT_USE_CACHE = true;
+    
+    private static PropertyUtil instance;
+    
     static
     {
-        instance = new PropertyUtil();
+        PropertyUtil.instance = new PropertyUtil();
     }
     
     public static PropertyUtil getInstance()
     {
-        return instance;
+        return PropertyUtil.instance;
     }
+    
+    private ResourceBundle bundle;
+    
+    private String bundleName = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
     
     /**
      * Internal property cache, used if and when users indicate that they want to use the cache.
      */
     private final ConcurrentMap<String, String> INTERNAL_PROPERTY_CACHE = new ConcurrentHashMap<String, String>();
     
-    /**
-     * A constant to indicate the default preference for caching properties, or not caching
-     * properties.
-     */
-    public static final boolean DEFAULT_USE_CACHE = true;
+    private boolean useCache = PropertyUtil.DEFAULT_USE_CACHE;
+    
+    public PropertyUtil()
+    {
+        this(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
+    }
+    
+    public PropertyUtil(final String bundleName)
+    {
+        this.bundleName = bundleName;
+        this.bundle = ResourceBundle.getBundle(this.bundleName);
+    }
     
     /**
      * Clears the internal property cache.
@@ -81,7 +88,7 @@ public class PropertyUtil
      */
     public String get(final String key, final String defaultValue)
     {
-        return this.getSystemOrPropertyString(key, defaultValue, useCache);
+        return this.getSystemOrPropertyString(key, defaultValue, this.useCache);
     }
     
     /**
@@ -90,7 +97,7 @@ public class PropertyUtil
      */
     public String getPropertyBundleName()
     {
-        return bundleName;
+        return this.bundleName;
     }
     
     /**
@@ -126,7 +133,7 @@ public class PropertyUtil
             {
                 // If we were unsuccessful in the cache and the system properties, try to fetch from
                 // oas.properties file on the class path
-                result = ResourceBundle.getBundle(this.bundleName).getString(key);
+                result = this.bundle.getString(key);
             }
             catch(final MissingResourceException mre)
             {
@@ -134,6 +141,9 @@ public class PropertyUtil
                 ;
             }
         }
+        
+        final Control control = Control.getControl(Arrays.asList("java.properties"));
+        final ResourceBundle next = ResourceBundle.getBundle(this.bundleName, control);
         
         // if the property didn't exist, replace it with the default value
         if(result == null)
@@ -165,14 +175,15 @@ public class PropertyUtil
     {
         if(newPropertyBundleName == null || newPropertyBundleName.isEmpty())
         {
-            bundleName = DEFAULT_PROPERTIES_BUNDLE_NAME;
+            this.bundleName = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
         }
         else
         {
-            bundleName = newPropertyBundleName;
+            this.bundleName = newPropertyBundleName;
         }
         
         this.INTERNAL_PROPERTY_CACHE.clear();
+        this.bundle = ResourceBundle.getBundle(this.bundleName);
     }
     
 }
