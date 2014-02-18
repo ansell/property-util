@@ -244,8 +244,27 @@ public class PropertyUtilTest
     }
     
     @Test
-    public final void testUserHome()
+    public final void testUserHome() throws Exception
     {
+        final String originalUserHome = System.setProperty("user.home", this.testDir.toString());
         
+        try
+        {
+            Files.copy(
+                    this.getClass().getResourceAsStream(
+                            "/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
+                    this.testDir.resolve("poddclienttest.properties"));
+            Assert.assertTrue(Files.exists(this.testDir.resolve("poddclienttest.properties")));
+            Assert.assertTrue(Files.size(this.testDir.resolve("poddclienttest.properties")) > 0);
+            
+            PropertyUtil result = new PropertyUtil("poddclienttest");
+            
+            Assert.assertEquals("Configured property for clearing property cache",
+                    result.get("test.clear.property.cache", "not-a-property"));
+        }
+        finally
+        {
+            System.setProperty("user.home", originalUserHome);
+        }
     }
 }
