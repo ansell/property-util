@@ -36,10 +36,10 @@ public class PropertyUtilTest
         Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
-        testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
+        this.testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
-                testPropertyUtil.getPropertyBundleName());
+                this.testPropertyUtil.getPropertyBundleName());
         
         Assert.assertNotNull("Test Resource was not found",
                 ResourceBundle.getBundle("com.github.ansell.propertyutil.test.propertyutiltestbundle"));
@@ -52,15 +52,15 @@ public class PropertyUtilTest
     public synchronized void tearDown() throws Exception
     {
         // clear property cache before and after tests
-        testPropertyUtil.clearPropertyCache();
+        this.testPropertyUtil.clearPropertyCache();
         
-        testPropertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
+        this.testPropertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
     }
     
     @Test
     public synchronized final void testBasicGetExistsNoDefault()
     {
-        final String result2 = testPropertyUtil.get("test.clear.property.cache", null);
+        final String result2 = this.testPropertyUtil.get("test.clear.property.cache", null);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result2);
         
@@ -71,7 +71,7 @@ public class PropertyUtilTest
     public synchronized final void testBasicGetExistsWithDefault()
     {
         final String result =
-                testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache",
+                this.testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache",
                         "default-clear-property-cache-test-property-1", false);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result);
@@ -82,7 +82,7 @@ public class PropertyUtilTest
     @Test
     public synchronized final void testBasicGetNotExistsNoDefault()
     {
-        final String result = testPropertyUtil.getSystemOrPropertyString("test.false.property", null, false);
+        final String result = this.testPropertyUtil.getSystemOrPropertyString("test.false.property", null, false);
         
         Assert.assertNull(result);
     }
@@ -91,7 +91,7 @@ public class PropertyUtilTest
     public synchronized final void testBasicGetNotExistsWithDefault()
     {
         final String result2 =
-                testPropertyUtil.getSystemOrPropertyString("test.false.property",
+                this.testPropertyUtil.getSystemOrPropertyString("test.false.property",
                         "default-clear-property-cache-test-property-2", true);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result2);
@@ -102,7 +102,7 @@ public class PropertyUtilTest
     @Test
     public synchronized final void testGetExistsNoDefaultNoCaching()
     {
-        final String result = testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache", null, false);
+        final String result = this.testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache", null, false);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result);
         
@@ -112,7 +112,7 @@ public class PropertyUtilTest
     @Test
     public synchronized final void testGetExistsNoDefaultWithCaching()
     {
-        final String result2 = testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache", null, true);
+        final String result2 = this.testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache", null, true);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result2);
         
@@ -123,7 +123,7 @@ public class PropertyUtilTest
     public synchronized final void testGetExistsWithDefaultNoCaching()
     {
         final String result =
-                testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache",
+                this.testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache",
                         "default-clear-property-cache-test-property-3", false);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result);
@@ -135,7 +135,7 @@ public class PropertyUtilTest
     public synchronized final void testGetExistsWithDefaultWithCaching()
     {
         final String result2 =
-                testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache",
+                this.testPropertyUtil.getSystemOrPropertyString("test.clear.property.cache",
                         "default-clear-property-cache-test-property-4", true);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result2);
@@ -147,7 +147,7 @@ public class PropertyUtilTest
     public synchronized final void testGetNotExistsNoDefaultNoCaching()
     {
         final String result3 =
-                testPropertyUtil.getSystemOrPropertyString("test.nonexistent.property.cache", null, false);
+                this.testPropertyUtil.getSystemOrPropertyString("test.nonexistent.property.cache", null, false);
         
         Assert.assertNull("test.nonexistent.property.cache property was not found", result3);
     }
@@ -156,7 +156,7 @@ public class PropertyUtilTest
     public synchronized final void testGetNotExistsNoDefaultWithCaching()
     {
         final String result3 =
-                testPropertyUtil.getSystemOrPropertyString("test.nonexistent.property.cache", null, true);
+                this.testPropertyUtil.getSystemOrPropertyString("test.nonexistent.property.cache", null, true);
         
         Assert.assertNull("test.nonexistent.property.cache property was not found", result3);
     }
@@ -165,7 +165,7 @@ public class PropertyUtilTest
     public synchronized final void testGetNotExistsWithDefaultNoCaching()
     {
         final String result =
-                testPropertyUtil.getSystemOrPropertyString("test.false.property",
+                this.testPropertyUtil.getSystemOrPropertyString("test.false.property",
                         "default-clear-property-cache-test-property-5", false);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result);
@@ -177,7 +177,7 @@ public class PropertyUtilTest
     public synchronized final void testGetNotExistsWithDefaultWithCaching()
     {
         final String result2 =
-                testPropertyUtil.getSystemOrPropertyString("test.false.property",
+                this.testPropertyUtil.getSystemOrPropertyString("test.false.property",
                         "default-clear-property-cache-test-property-6", true);
         
         Assert.assertNotNull("test.clear.property.cache property was not found", result2);
@@ -188,19 +188,19 @@ public class PropertyUtilTest
     @Test
     public synchronized final void testSetPropertyBundleName()
     {
-        testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
+        this.testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
-                testPropertyUtil.getPropertyBundleName());
+                this.testPropertyUtil.getPropertyBundleName());
         
         // make sure we are using our custom test bundle
-        testPropertyUtil.setPropertyBundleName(null);
+        this.testPropertyUtil.setPropertyBundleName(null);
         
-        Assert.assertEquals(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME, testPropertyUtil.getPropertyBundleName());
+        Assert.assertEquals(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME, this.testPropertyUtil.getPropertyBundleName());
         
-        testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
+        this.testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
-                testPropertyUtil.getPropertyBundleName());
+                this.testPropertyUtil.getPropertyBundleName());
     }
 }

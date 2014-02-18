@@ -142,7 +142,7 @@ public class PropertyUtil
                 {
                     result = nextBundle.getString(key);
                 }
-                catch(MissingResourceException e)
+                catch(final MissingResourceException e)
                 {
                     // Do nothing, will use default
                     ;
@@ -205,19 +205,6 @@ public class PropertyUtil
                 result = this.bundle;
                 if(this.bundle == null)
                 {
-                    try
-                    {
-                        // Try to resolve bundle on classpath
-                        this.bundle = ResourceBundle.getBundle(this.bundleName);
-                    }
-                    catch(final MissingResourceException mre)
-                    {
-                        // Do nothing, will try other options
-                        ;
-                    }
-                }
-                if(this.bundle == null)
-                {
                     // Try to resolve bundle in the current user directory
                     final String userDir = System.getProperty("user.dir");
                     if(userDir != null)
@@ -272,6 +259,19 @@ public class PropertyUtil
                                 ;
                             }
                         }
+                    }
+                }
+                if(this.bundle == null)
+                {
+                    try
+                    {
+                        // Try to resolve bundle on classpath
+                        this.bundle = ResourceBundle.getBundle(this.bundleName);
+                    }
+                    catch(final MissingResourceException mre)
+                    {
+                        // Do nothing, will try other options
+                        ;
                     }
                 }
                 result = this.bundle;
