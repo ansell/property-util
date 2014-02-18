@@ -3,6 +3,8 @@
  */
 package com.github.ansell.propertyutil.test;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
@@ -213,5 +215,34 @@ public class PropertyUtilTest
         
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 testPropertyUtil.getPropertyBundleName());
+    }
+    
+    @Test
+    public final void testUserDir() throws Exception
+    {
+        final String originalUserDir = System.setProperty("user.dir", this.testDir.toString());
+        
+        try
+        {
+            Files.copy(
+                    this.getClass().getResourceAsStream(
+                            "/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
+                    this.testDir.resolve("poddclienttest.properties"));
+            
+            PropertyUtil result = new PropertyUtil("poddclienttest");
+            
+            Assert.assertEquals("150.229.2.222", result.get("trayscan.url", "not-a-url"));
+        }
+        finally
+        {
+            System.setProperty("user.dir", originalUserDir);
+        }
+        
+    }
+    
+    @Test
+    public final void testUserHome()
+    {
+        
     }
 }
