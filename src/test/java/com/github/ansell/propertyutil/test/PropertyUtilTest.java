@@ -233,7 +233,8 @@ public class PropertyUtilTest
             
             PropertyUtil result = new PropertyUtil("poddclienttest");
             
-            Assert.assertEquals("150.229.2.222", result.get("trayscan.url", "not-a-url"));
+            Assert.assertEquals("Configured property for clearing property cache",
+                    result.get("test.clear.property.cache", "not-a-property"));
         }
         finally
         {
