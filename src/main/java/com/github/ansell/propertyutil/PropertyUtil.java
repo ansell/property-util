@@ -200,6 +200,7 @@ public class PropertyUtil
                                 this.bundle =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
+                                System.out.println("Found property bundle in user.dir: " + this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
@@ -229,6 +230,7 @@ public class PropertyUtil
                                 this.bundle =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
+                                System.out.println("Found property bundle in user.home: " + this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
@@ -248,6 +250,7 @@ public class PropertyUtil
                     {
                         // Try to resolve bundle on classpath
                         this.bundle = ResourceBundle.getBundle(this.bundleName);
+                        System.out.println("Found property bundle in classpath: " + this.bundleName);
                     }
                     catch(final MissingResourceException mre)
                     {
