@@ -26,13 +26,11 @@ public class PropertyUtilPerformanceTest
     @Before
     public synchronized void setUp() throws Exception
     {
-        this.propertyUtil = new PropertyUtil();
+        this.propertyUtil = new PropertyUtil("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         // verify that the default is to use caching
         Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
-        this.propertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
-        
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 this.propertyUtil.getPropertyBundleName());
         
@@ -48,8 +46,6 @@ public class PropertyUtilPerformanceTest
     {
         // clear property cache before and after tests
         this.propertyUtil.clearPropertyCache();
-        
-        this.propertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
     }
     
     @Test

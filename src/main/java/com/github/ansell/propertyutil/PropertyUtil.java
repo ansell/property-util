@@ -11,45 +11,36 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * A utility class for accessing properties from the following sources:
+ * 
+ * <ol>
+ * <li>System properties : -Dproperty.name=... on command line</li>
+ * <li>Properties file in current user directory: ./bundlename.properties</li>
+ * <li>Properties file in user home directory: ~/bundlename.properties</li>
+ * <li>Properties file in classpath: /bundlename.properties</li>
+ * </ol>
+ * 
  * @author Peter Ansell p_ansell@yahoo.com
  * 
  */
 public class PropertyUtil
 {
     /**
-     * Defines podd.properties as the properties resource bundle name.
-     * 
-     * Default value: podd
-     */
-    public static final String DEFAULT_PROPERTIES_BUNDLE_NAME = "podd";
-    
-    /**
      * A constant to indicate the default preference for caching properties, or not caching
      * properties.
      */
     public static final boolean DEFAULT_USE_CACHE = true;
     
-    private static PropertyUtil instance;
-    
-    static
-    {
-        PropertyUtil.instance = new PropertyUtil();
-    }
-    
-    public static PropertyUtil getInstance()
-    {
-        return PropertyUtil.instance;
-    }
-    
     private volatile ResourceBundle bundle;
     
-    private String bundleName = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
+    private String bundleName = null;
     
     /**
      * Internal property cache, used if and when users indicate that they want to use the cache.
@@ -57,10 +48,6 @@ public class PropertyUtil
     private final ConcurrentMap<String, String> cache = new ConcurrentHashMap<String, String>();
     
     private boolean useCache = PropertyUtil.DEFAULT_USE_CACHE;
-    
-    public PropertyUtil()
-    {
-    }
     
     public PropertyUtil(final String bundleName)
     {
@@ -179,14 +166,8 @@ public class PropertyUtil
      */
     public void setPropertyBundleName(final String newPropertyBundleName)
     {
-        if(newPropertyBundleName == null || newPropertyBundleName.isEmpty())
-        {
-            this.bundleName = PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME;
-        }
-        else
-        {
-            this.bundleName = newPropertyBundleName;
-        }
+        Objects.requireNonNull(newPropertyBundleName, "Property bundle name cannot be null");
+        this.bundleName = newPropertyBundleName;
         
         this.cache.clear();
         synchronized(this)

@@ -28,7 +28,7 @@ public class PropertyUtilTest
     @Before
     public synchronized void setUp() throws Exception
     {
-        this.testPropertyUtil = new PropertyUtil();
+        this.testPropertyUtil = new PropertyUtil("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         // clear property cache before and after tests
         this.testPropertyUtil.clearPropertyCache();
         
@@ -36,8 +36,6 @@ public class PropertyUtilTest
         Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
         
         // make sure we are using our custom test bundle
-        this.testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
-        
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
                 this.testPropertyUtil.getPropertyBundleName());
         
@@ -53,8 +51,6 @@ public class PropertyUtilTest
     {
         // clear property cache before and after tests
         this.testPropertyUtil.clearPropertyCache();
-        
-        this.testPropertyUtil.setPropertyBundleName(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME);
     }
     
     @Test
@@ -188,16 +184,6 @@ public class PropertyUtilTest
     @Test
     public synchronized final void testSetPropertyBundleName()
     {
-        this.testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
-        
-        Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
-                this.testPropertyUtil.getPropertyBundleName());
-        
-        // make sure we are using our custom test bundle
-        this.testPropertyUtil.setPropertyBundleName(null);
-        
-        Assert.assertEquals(PropertyUtil.DEFAULT_PROPERTIES_BUNDLE_NAME, this.testPropertyUtil.getPropertyBundleName());
-        
         this.testPropertyUtil.setPropertyBundleName("com.github.ansell.propertyutil.test.propertyutiltestbundle");
         
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
