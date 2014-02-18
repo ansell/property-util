@@ -228,6 +228,8 @@ public class PropertyUtilTest
                     this.getClass().getResourceAsStream(
                             "/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
                     this.testDir.resolve("poddclienttest.properties"));
+            Assert.assertTrue(Files.exists(this.testDir.resolve("poddclienttest.properties")));
+            Assert.assertTrue(Files.size(this.testDir.resolve("poddclienttest.properties")) > 0);
             
             PropertyUtil result = new PropertyUtil("poddclienttest");
             
