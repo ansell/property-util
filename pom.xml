@@ -103,6 +103,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
+			<!-- Create code coverage reports and submit them to coveralls.io. -->
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>2.1.0</version>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
