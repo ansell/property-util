@@ -6,3 +6,5 @@ jdk:
 notifications:
   email:
     - ansell.peter@gmail.com
+after_success:
+  - mvn clean test jacoco:report coveralls:jacoco
