@@ -57,6 +57,8 @@ public class PropertyUtil
     public PropertyUtil(final String bundleName)
     {
         this.bundleName = bundleName;
+        
+        this.log.trace("PropertyUtil: bundleName={}", bundleName);
     }
     
     /**
@@ -179,6 +181,8 @@ public class PropertyUtil
         Objects.requireNonNull(newPropertyBundleName, "Property bundle name cannot be null");
         this.bundleName = newPropertyBundleName;
         
+        this.log.trace("PropertyUtil: change bundleName={}", bundleName);
+        
         this.cache.clear();
         synchronized(this)
         {
@@ -189,12 +193,12 @@ public class PropertyUtil
     private ResourceBundle getBundle()
     {
         ResourceBundle result = this.bundle;
-        if(this.bundle == null)
+        if(result == null)
         {
             synchronized(this)
             {
                 result = this.bundle;
-                if(this.bundle == null)
+                if(result == null)
                 {
                     // Try to resolve bundle in the current user directory
                     final String userDir = System.getProperty("user.dir");
@@ -207,7 +211,7 @@ public class PropertyUtil
                             {
                                 final URL[] urls = { userDirPath.toUri().toURL() };
                                 final ClassLoader loader = new URLClassLoader(urls);
-                                this.bundle =
+                                result =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
                                 this.log.debug("Found property bundle in user.dir: {}", this.bundleName);
@@ -224,7 +228,7 @@ public class PropertyUtil
                         }
                     }
                 }
-                if(this.bundle == null)
+                if(result == null)
                 {
                     // Try to resolve bundle in the current user home directory
                     final String userHome = System.getProperty("user.home");
@@ -237,7 +241,7 @@ public class PropertyUtil
                             {
                                 final URL[] urls = { userHomePath.toUri().toURL() };
                                 final ClassLoader loader = new URLClassLoader(urls);
-                                this.bundle =
+                                result =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
                                 this.log.debug("Found property bundle in user.home: {}", this.bundleName);
@@ -254,12 +258,12 @@ public class PropertyUtil
                         }
                     }
                 }
-                if(this.bundle == null)
+                if(result == null)
                 {
                     try
                     {
                         // Try to resolve bundle on classpath
-                        this.bundle = ResourceBundle.getBundle(this.bundleName);
+                        result = ResourceBundle.getBundle(this.bundleName);
                         this.log.debug("Found property bundle in classpath: {}", this.bundleName);
                     }
                     catch(final MissingResourceException mre)
@@ -268,7 +272,7 @@ public class PropertyUtil
                         ;
                     }
                 }
-                result = this.bundle;
+                this.bundle = result;
             }
         }
         return result;
