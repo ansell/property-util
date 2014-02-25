@@ -204,6 +204,7 @@ public class PropertyUtil
                     final String userDir = System.getProperty("user.dir");
                     if(userDir != null)
                     {
+                        this.log.debug("Looking for property bundle in user.dir: {}", userDir);
                         final Path userDirPath = Paths.get(userDir);
                         if(Files.exists(userDirPath))
                         {
@@ -234,6 +235,7 @@ public class PropertyUtil
                     final String userHome = System.getProperty("user.home");
                     if(userHome != null)
                     {
+                        this.log.debug("Looking for property bundle in user.home: {}", userHome);
                         final Path userHomePath = Paths.get(userHome);
                         if(Files.exists(userHomePath))
                         {
@@ -262,6 +264,7 @@ public class PropertyUtil
                 {
                     try
                     {
+                        this.log.debug("Looking for property bundle on classpath");
                         // Try to resolve bundle on classpath
                         result = ResourceBundle.getBundle(this.bundleName);
                         this.log.debug("Found property bundle in classpath: {}", this.bundleName);
@@ -271,6 +274,10 @@ public class PropertyUtil
                         // Do nothing, will try other options
                         ;
                     }
+                }
+                if(result == null)
+                {
+                    this.log.info("Could not find property bundle: {}", this.bundleName);
                 }
                 this.bundle = result;
             }
