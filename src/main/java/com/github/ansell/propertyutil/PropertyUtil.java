@@ -17,6 +17,9 @@ import java.util.ResourceBundle.Control;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A utility class for accessing properties from the following sources:
  * 
@@ -32,6 +35,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class PropertyUtil
 {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
     /**
      * A constant to indicate the default preference for caching properties, or not caching
      * properties.
@@ -155,6 +160,11 @@ public class PropertyUtil
             }
         }
         
+        if(this.log.isTraceEnabled())
+        {
+            this.log.trace("Returning property value: <{}>=<{}> (default=<{}>)", key, result, defaultValue);
+        }
+        
         return result;
     }
     
@@ -200,7 +210,7 @@ public class PropertyUtil
                                 this.bundle =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
-                                System.out.println("Found property bundle in user.dir: " + this.bundleName);
+                                this.log.debug("Found property bundle in user.dir: {}", this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
@@ -230,7 +240,7 @@ public class PropertyUtil
                                 this.bundle =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
-                                System.out.println("Found property bundle in user.home: " + this.bundleName);
+                                this.log.debug("Found property bundle in user.home: {}", this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
@@ -250,7 +260,7 @@ public class PropertyUtil
                     {
                         // Try to resolve bundle on classpath
                         this.bundle = ResourceBundle.getBundle(this.bundleName);
-                        System.out.println("Found property bundle in classpath: " + this.bundleName);
+                        this.log.debug("Found property bundle in classpath: {}", this.bundleName);
                     }
                     catch(final MissingResourceException mre)
                     {
