@@ -54,11 +54,20 @@ public class PropertyUtil
     
     private boolean useCache = PropertyUtil.DEFAULT_USE_CACHE;
     
+    private String userSubdirectory = "";
+    
     public PropertyUtil(final String bundleName)
     {
         this.bundleName = bundleName;
         
         this.log.trace("PropertyUtil: bundleName={}", bundleName);
+    }
+    
+    public PropertyUtil(final String bundleName, final String userSubdirectory)
+    {
+        this(bundleName);
+        
+        this.userSubdirectory = userSubdirectory;
     }
     
     /**
@@ -204,7 +213,8 @@ public class PropertyUtil
                     final String userDir = System.getProperty("user.dir");
                     if(userDir != null)
                     {
-                        this.log.debug("Looking for property bundle in user.dir: {}", userDir);
+                        final String fullUserDir = userDir + userSubdirectory;
+                        this.log.debug("Looking for property bundle in user.dir + subdirectory: {}", fullUserDir);
                         final Path userDirPath = Paths.get(userDir);
                         if(Files.exists(userDirPath))
                         {
@@ -215,7 +225,7 @@ public class PropertyUtil
                                 result =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
-                                this.log.debug("Found property bundle in user.dir: {}", this.bundleName);
+                                this.log.debug("Found property bundle in user.dir + subdirectory: {}", this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
@@ -235,7 +245,8 @@ public class PropertyUtil
                     final String userHome = System.getProperty("user.home");
                     if(userHome != null)
                     {
-                        this.log.debug("Looking for property bundle in user.home: {}", userHome);
+                        final String fullUserHome = userHome + userSubdirectory;
+                        this.log.debug("Looking for property bundle in user.home + subdirectory: {}", fullUserHome);
                         final Path userHomePath = Paths.get(userHome);
                         if(Files.exists(userHomePath))
                         {
@@ -246,7 +257,7 @@ public class PropertyUtil
                                 result =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
-                                this.log.debug("Found property bundle in user.home: {}", this.bundleName);
+                                this.log.debug("Found property bundle in user.home + subdirectory: {}", this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
