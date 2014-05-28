@@ -213,7 +213,15 @@ public class PropertyUtil
                     final String userDir = System.getProperty("user.dir");
                     if(userDir != null)
                     {
-                        final String fullUserDir = userDir + userSubdirectory;
+                        final String fullUserDir;
+                        if(userDir.endsWith("/"))
+                        {
+                            fullUserDir = userDir + userSubdirectory;
+                        }
+                        else
+                        {
+                            fullUserDir = userDir + "/" + userSubdirectory;
+                        }
                         this.log.debug("Looking for property bundle in user.dir + subdirectory: {}", fullUserDir);
                         final Path userDirPath = Paths.get(userDir);
                         if(Files.exists(userDirPath))
@@ -238,6 +246,10 @@ public class PropertyUtil
                             }
                         }
                     }
+                    else
+                    {
+                        this.log.debug("Could not find user.dir property");
+                    }
                 }
                 if(result == null)
                 {
@@ -245,7 +257,15 @@ public class PropertyUtil
                     final String userHome = System.getProperty("user.home");
                     if(userHome != null)
                     {
-                        final String fullUserHome = userHome + userSubdirectory;
+                        final String fullUserHome;
+                        if(userHome.endsWith("/"))
+                        {
+                            fullUserHome = userHome + userSubdirectory;
+                        }
+                        else
+                        {
+                            fullUserHome = userHome + "/" + userSubdirectory;
+                        }
                         this.log.debug("Looking for property bundle in user.home + subdirectory: {}", fullUserHome);
                         final Path userHomePath = Paths.get(userHome);
                         if(Files.exists(userHomePath))
@@ -269,6 +289,10 @@ public class PropertyUtil
                                 ;
                             }
                         }
+                    }
+                    else
+                    {
+                        this.log.debug("Could not find user.home property");
                     }
                 }
                 if(result == null)
