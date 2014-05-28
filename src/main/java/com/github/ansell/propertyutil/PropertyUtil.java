@@ -239,10 +239,10 @@ public class PropertyUtil
                             {
                                 this.log.debug("URL exception with user.dir:", e);
                             }
-                            catch(final MissingResourceException mre)
+                            catch(final MissingResourceException e)
                             {
                                 // Do nothing, will try other options
-                                ;
+                                this.log.debug("Missing resource exception with user.dir:", e);
                             }
                         }
                     }
@@ -283,10 +283,10 @@ public class PropertyUtil
                             {
                                 this.log.debug("URL exception with user.home:", e);
                             }
-                            catch(final MissingResourceException mre)
+                            catch(final MissingResourceException e)
                             {
                                 // Do nothing, will try other options
-                                ;
+                                this.log.debug("Missing resource exception with user.home:", e);
                             }
                         }
                     }
