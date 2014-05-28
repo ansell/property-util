@@ -237,7 +237,7 @@ public class PropertyUtil
                             }
                             catch(final MalformedURLException e)
                             {
-                                
+                                this.log.debug("URL exception with user.dir:", e);
                             }
                             catch(final MissingResourceException mre)
                             {
@@ -281,7 +281,7 @@ public class PropertyUtil
                             }
                             catch(final MalformedURLException e)
                             {
-                                
+                                this.log.debug("URL exception with user.home:", e);
                             }
                             catch(final MissingResourceException mre)
                             {
