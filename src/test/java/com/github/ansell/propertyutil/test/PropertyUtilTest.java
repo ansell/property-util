@@ -244,6 +244,60 @@ public class PropertyUtilTest
     }
     
     @Test
+    public final void testUserDirSubDirectory() throws Exception
+    {
+        final String originalUserHome = System.setProperty("user.dir", this.testDir.toString());
+        
+        try
+        {
+            Files.createDirectories(this.testDir.resolve("test"));
+            
+            Files.copy(
+                    this.getClass().getResourceAsStream(
+                            "/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
+                    this.testDir.resolve("test/poddclienttest.properties"));
+            Assert.assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
+            Assert.assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
+            
+            PropertyUtil result = new PropertyUtil("test.poddclienttest");
+            
+            Assert.assertEquals("Configured property for clearing property cache",
+                    result.get("test.clear.property.cache", "not-a-property"));
+        }
+        finally
+        {
+            System.setProperty("user.dir", originalUserHome);
+        }
+    }
+
+    @Test
+    public final void testUserDirSubDirectoryOther() throws Exception
+    {
+        final String originalUserHome = System.setProperty("user.dir", this.testDir.toString());
+        
+        try
+        {
+            Files.createDirectories(this.testDir.resolve("test"));
+            
+            Files.copy(
+                    this.getClass().getResourceAsStream(
+                            "/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
+                    this.testDir.resolve("test/poddclienttest.properties"));
+            Assert.assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
+            Assert.assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
+            
+            PropertyUtil result = new PropertyUtil("poddclienttest", "test");
+            
+            Assert.assertEquals("Configured property for clearing property cache",
+                    result.get("test.clear.property.cache", "not-a-property"));
+        }
+        finally
+        {
+            System.setProperty("user.dir", originalUserHome);
+        }
+    }
+    
+    @Test
     public final void testUserHome() throws Exception
     {
         final String originalUserHome = System.setProperty("user.home", this.testDir.toString());
