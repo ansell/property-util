@@ -223,7 +223,7 @@ public class PropertyUtil
                             fullUserDir = userDir + "/" + userSubdirectory;
                         }
                         this.log.debug("Looking for property bundle in user.dir + subdirectory: {}", fullUserDir);
-                        final Path userDirPath = Paths.get(userDir);
+                        final Path userDirPath = Paths.get(fullUserDir);
                         if(Files.exists(userDirPath))
                         {
                             try
@@ -267,7 +267,7 @@ public class PropertyUtil
                             fullUserHome = userHome + "/" + userSubdirectory;
                         }
                         this.log.debug("Looking for property bundle in user.home + subdirectory: {}", fullUserHome);
-                        final Path userHomePath = Paths.get(userHome);
+                        final Path userHomePath = Paths.get(fullUserHome);
                         if(Files.exists(userHomePath))
                         {
                             try
