@@ -21,7 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A utility class for accessing properties from the following sources:
+ * A utility class for accessing properties from the following sources in order, with the first
+ * instance that is found being used:
  * 
  * <ol>
  * <li>System properties : -Dproperty.name=... on command line</li>
@@ -43,6 +44,9 @@ public class PropertyUtil
      */
     public static final boolean DEFAULT_USE_CACHE = true;
     
+    /**
+     * A late binding resource bundle which is checked internally with synchronized double-locking.
+     */
     private volatile ResourceBundle bundle;
     
     private String bundleName = null;
