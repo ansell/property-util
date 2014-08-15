@@ -104,15 +104,15 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 			<!-- Create code coverage reports and submit them to coveralls.io. -->
-			<!-- plugin>
+			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>2.1.0</version>
+				<version>2.2.0</version>
 			</plugin>
 			<plugin>
 			    <groupId>org.jacoco</groupId>
 			    <artifactId>jacoco-maven-plugin</artifactId>
-			    <version>0.6.4.201312101107</version>
+			    <version>0.7.1.201405082137</version>
 			    <executions>
 			        <execution>
 			            <id>prepare-agent</id>
@@ -121,7 +121,7 @@
 			            </goals>
 			        </execution>
 			    </executions>
-			</plugin -->
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
