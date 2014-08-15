@@ -44,8 +44,6 @@ public class PropertyUtilTest
     private PropertyUtil getTestUtil()
     {
         PropertyUtil result = new PropertyUtil("com.github.ansell.propertyutil.test.propertyutiltestbundle");
-        // clear property cache before and after tests
-        result.clearPropertyCache();
         
         // make sure we are using our custom test bundle
         Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
@@ -269,7 +267,7 @@ public class PropertyUtilTest
             System.setProperty("user.dir", originalUserHome);
         }
     }
-
+    
     @Test
     public final void testUserDirSubDirectoryOther() throws Exception
     {
@@ -348,7 +346,7 @@ public class PropertyUtilTest
             System.setProperty("user.home", originalUserHome);
         }
     }
-
+    
     @Test
     public final void testUserHomeSubDirectoryOther() throws Exception
     {

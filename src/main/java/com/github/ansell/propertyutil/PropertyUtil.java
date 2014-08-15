@@ -237,7 +237,8 @@ public class PropertyUtil
                                 result =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
-                                this.log.debug("Found property bundle in user.dir + subdirectory: {}", this.bundleName);
+                                this.log.debug("Found property bundle in user.dir + subdirectory: {} {}", userDirPath
+                                        .toUri().toURL(), this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
@@ -281,7 +282,8 @@ public class PropertyUtil
                                 result =
                                         ResourceBundle.getBundle(this.bundleName, Locale.getDefault(), loader,
                                                 Control.getNoFallbackControl(Control.FORMAT_PROPERTIES));
-                                this.log.debug("Found property bundle in user.home + subdirectory: {}", this.bundleName);
+                                this.log.debug("Found property bundle in user.home + subdirectory: {} {}", userHomePath
+                                        .toUri().toURL(), this.bundleName);
                             }
                             catch(final MalformedURLException e)
                             {
