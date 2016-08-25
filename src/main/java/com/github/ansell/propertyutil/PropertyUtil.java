@@ -123,24 +123,14 @@ public final class PropertyUtil {
 		}
 
 		return this.cache.computeIfAbsent(key, k -> {
-			// Try to get the property from the system configuration, for
-			// example,
-			// from, 'java
-			// -Dkey=value'
 			Optional<String> result = Optional.ofNullable(System.getProperty(k));
 
-			if (!result.isPresent()) {
-				// If we were unsuccessful in the cache and the system
-				// properties,
-				// try to fetch from
-				// properties file on the class path
-				if (this.bundle != null) {
-					try {
-						result = Optional.ofNullable(this.bundle.getString(k));
-					} catch (final MissingResourceException e) {
-						// Do nothing, will use default
-						;
-					}
+			if (!result.isPresent() && this.bundle != null) {
+				try {
+					result = Optional.ofNullable(this.bundle.getString(k));
+				} catch (final MissingResourceException e) {
+					// Do nothing, will use default
+					;
 				}
 			}
 
