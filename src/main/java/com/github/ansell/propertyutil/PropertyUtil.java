@@ -130,7 +130,6 @@ public final class PropertyUtil {
 					result = Optional.ofNullable(this.bundle.getString(k));
 				} catch (final MissingResourceException e) {
 					// Do nothing, will use default
-					;
 				}
 			}
 
