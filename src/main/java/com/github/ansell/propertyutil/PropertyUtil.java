@@ -172,7 +172,6 @@ public final class PropertyUtil {
 				LOGGER.debug("Found property bundle in classpath: {}", bundleName);
 			} catch (final MissingResourceException mre) {
 				// Do nothing, will try other options
-				;
 			}
 		}
 		if (!result.isPresent()) {
