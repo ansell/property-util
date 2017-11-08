@@ -3,16 +3,22 @@
  */
 package com.github.ansell.propertyutil.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 import com.github.ansell.propertyutil.PropertyUtil;
 
@@ -21,6 +27,7 @@ import com.github.ansell.propertyutil.PropertyUtil;
  * 
  * @author Peter Ansell p_ansell@yahoo.com
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class PropertyUtilTest {
 	@Rule
 	public TemporaryFolder tempDir = new TemporaryFolder();
@@ -30,23 +37,22 @@ public class PropertyUtilTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.testDir = this.tempDir.newFolder("propertyutiltest").toPath();
 
 		// verify that the default is to use caching
-		Assert.assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
+		assertTrue(PropertyUtil.DEFAULT_USE_CACHE);
 	}
 
 	private PropertyUtil getTestUtil() {
 		PropertyUtil result = new PropertyUtil("com.github.ansell.propertyutil.test.propertyutiltestbundle");
 
 		// make sure we are using our custom test bundle
-		Assert.assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle",
-				result.getPropertyBundleName());
+		assertEquals("com.github.ansell.propertyutil.test.propertyutiltestbundle", result.getPropertyBundleName());
 
-		Assert.assertNotNull("Test Resource was not found",
-				ResourceBundle.getBundle("com.github.ansell.propertyutil.test.propertyutiltestbundle"));
+		assertNotNull(ResourceBundle.getBundle("com.github.ansell.propertyutil.test.propertyutiltestbundle"),
+				"Test Resource was not found");
 
 		return result;
 	}
@@ -54,7 +60,7 @@ public class PropertyUtilTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.testDir = null;
 	}
@@ -64,9 +70,9 @@ public class PropertyUtilTest {
 		PropertyUtil testPropertyUtil = this.getTestUtil();
 		final String result2 = testPropertyUtil.get("test.clear.property.cache");
 
-		Assert.assertNotNull("test.clear.property.cache property was not found", result2);
+		assertNotNull(result2, "test.clear.property.cache property was not found");
 
-		Assert.assertEquals("Configured property for clearing property cache", result2);
+		assertEquals("Configured property for clearing property cache", result2);
 	}
 
 	@Test
@@ -75,9 +81,9 @@ public class PropertyUtilTest {
 		final String result = testPropertyUtil.get("test.clear.property.cache",
 				"default-clear-property-cache-test-property-1");
 
-		Assert.assertNotNull("test.clear.property.cache property was not found", result);
+		assertNotNull(result, "test.clear.property.cache property was not found");
 
-		Assert.assertEquals("Configured property for clearing property cache", result);
+		assertEquals("Configured property for clearing property cache", result);
 	}
 
 	@Test
@@ -85,7 +91,7 @@ public class PropertyUtilTest {
 		PropertyUtil testPropertyUtil = this.getTestUtil();
 		final String result = testPropertyUtil.get("test.false.property", null);
 
-		Assert.assertNull(result);
+		assertNull(result);
 	}
 
 	@Test
@@ -94,9 +100,9 @@ public class PropertyUtilTest {
 		final String result2 = testPropertyUtil.get("test.false.property",
 				"default-clear-property-cache-test-property-2");
 
-		Assert.assertNotNull("test.clear.property.cache property was not found", result2);
+		assertNotNull(result2, "test.clear.property.cache property was not found");
 
-		Assert.assertEquals("default-clear-property-cache-test-property-2", result2);
+		assertEquals("default-clear-property-cache-test-property-2", result2);
 	}
 
 	@Test
@@ -104,9 +110,9 @@ public class PropertyUtilTest {
 		PropertyUtil testPropertyUtil = this.getTestUtil();
 		final String result2 = testPropertyUtil.get("test.clear.property.cache", null);
 
-		Assert.assertNotNull("test.clear.property.cache property was not found", result2);
+		assertNotNull(result2, "test.clear.property.cache property was not found");
 
-		Assert.assertEquals("Configured property for clearing property cache", result2);
+		assertEquals("Configured property for clearing property cache", result2);
 	}
 
 	@Test
@@ -115,9 +121,9 @@ public class PropertyUtilTest {
 		final String result2 = testPropertyUtil.get("test.clear.property.cache",
 				"default-clear-property-cache-test-property-4");
 
-		Assert.assertNotNull("test.clear.property.cache property was not found", result2);
+		assertNotNull(result2, "test.clear.property.cache property was not found");
 
-		Assert.assertEquals("Configured property for clearing property cache", result2);
+		assertEquals("Configured property for clearing property cache", result2);
 	}
 
 	@Test
@@ -125,7 +131,7 @@ public class PropertyUtilTest {
 		PropertyUtil testPropertyUtil = this.getTestUtil();
 		final String result3 = testPropertyUtil.get("test.nonexistent.property.cache", null);
 
-		Assert.assertNull("test.nonexistent.property.cache property was not found", result3);
+		assertNull(result3, "test.nonexistent.property.cache property was not found");
 	}
 
 	@Test
@@ -134,9 +140,9 @@ public class PropertyUtilTest {
 		final String result2 = testPropertyUtil.get("test.false.property",
 				"default-clear-property-cache-test-property-6");
 
-		Assert.assertNotNull("test.clear.property.cache property was not found", result2);
+		assertNotNull(result2, "test.clear.property.cache property was not found");
 
-		Assert.assertEquals("default-clear-property-cache-test-property-6", result2);
+		assertEquals("default-clear-property-cache-test-property-6", result2);
 	}
 
 	@Test
@@ -148,13 +154,13 @@ public class PropertyUtilTest {
 					this.getClass().getResourceAsStream(
 							"/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
 					this.testDir.resolve("poddclienttest.properties"));
-			Assert.assertTrue(Files.exists(this.testDir.resolve("poddclienttest.properties")));
-			Assert.assertTrue(Files.size(this.testDir.resolve("poddclienttest.properties")) > 0);
+			assertTrue(Files.exists(this.testDir.resolve("poddclienttest.properties")));
+			assertTrue(Files.size(this.testDir.resolve("poddclienttest.properties")) > 0);
 
 			PropertyUtil result = new PropertyUtil("poddclienttest");
 
-			Assert.assertEquals("Configured property for clearing property cache",
-					result.get("test.clear.property.cache", "not-a-property"));
+			assertEquals(result.get("test.clear.property.cache", "not-a-property"),
+					"Configured property for clearing property cache");
 		} finally {
 			System.setProperty("user.dir", originalUserDir);
 		}
@@ -172,13 +178,13 @@ public class PropertyUtilTest {
 					this.getClass().getResourceAsStream(
 							"/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
 					this.testDir.resolve("test/poddclienttest.properties"));
-			Assert.assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
-			Assert.assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
+			assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
+			assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
 
 			PropertyUtil result = new PropertyUtil("test.poddclienttest");
 
-			Assert.assertEquals("Configured property for clearing property cache",
-					result.get("test.clear.property.cache", "not-a-property"));
+			assertEquals(result.get("test.clear.property.cache", "not-a-property"),
+					"Configured property for clearing property cache");
 		} finally {
 			System.setProperty("user.dir", originalUserHome);
 		}
@@ -195,13 +201,13 @@ public class PropertyUtilTest {
 					this.getClass().getResourceAsStream(
 							"/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
 					this.testDir.resolve("test/poddclienttest.properties"));
-			Assert.assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
-			Assert.assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
+			assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
+			assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
 
 			PropertyUtil result = new PropertyUtil("poddclienttest", "test");
 
-			Assert.assertEquals("Configured property for clearing property cache",
-					result.get("test.clear.property.cache", "not-a-property"));
+			assertEquals(result.get("test.clear.property.cache", "not-a-property"),
+					"Configured property for clearing property cache");
 		} finally {
 			System.setProperty("user.dir", originalUserHome);
 		}
@@ -216,13 +222,13 @@ public class PropertyUtilTest {
 					this.getClass().getResourceAsStream(
 							"/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
 					this.testDir.resolve("poddclienttest.properties"));
-			Assert.assertTrue(Files.exists(this.testDir.resolve("poddclienttest.properties")));
-			Assert.assertTrue(Files.size(this.testDir.resolve("poddclienttest.properties")) > 0);
+			assertTrue(Files.exists(this.testDir.resolve("poddclienttest.properties")));
+			assertTrue(Files.size(this.testDir.resolve("poddclienttest.properties")) > 0);
 
 			PropertyUtil result = new PropertyUtil("poddclienttest");
 
-			Assert.assertEquals("Configured property for clearing property cache",
-					result.get("test.clear.property.cache", "not-a-property"));
+			assertEquals(result.get("test.clear.property.cache", "not-a-property"),
+					"Configured property for clearing property cache");
 		} finally {
 			System.setProperty("user.home", originalUserHome);
 		}
@@ -239,13 +245,13 @@ public class PropertyUtilTest {
 					this.getClass().getResourceAsStream(
 							"/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
 					this.testDir.resolve("test/poddclienttest.properties"));
-			Assert.assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
-			Assert.assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
+			assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
+			assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
 
 			PropertyUtil result = new PropertyUtil("test.poddclienttest");
 
-			Assert.assertEquals("Configured property for clearing property cache",
-					result.get("test.clear.property.cache", "not-a-property"));
+			assertEquals(result.get("test.clear.property.cache", "not-a-property"),
+					"Configured property for clearing property cache");
 		} finally {
 			System.setProperty("user.home", originalUserHome);
 		}
@@ -262,13 +268,13 @@ public class PropertyUtilTest {
 					this.getClass().getResourceAsStream(
 							"/com/github/ansell/propertyutil/test/propertyutiltestbundle.properties"),
 					this.testDir.resolve("test/poddclienttest.properties"));
-			Assert.assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
-			Assert.assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
+			assertTrue(Files.exists(this.testDir.resolve("test/poddclienttest.properties")));
+			assertTrue(Files.size(this.testDir.resolve("test/poddclienttest.properties")) > 0);
 
 			PropertyUtil result = new PropertyUtil("poddclienttest", "test");
 
-			Assert.assertEquals("Configured property for clearing property cache",
-					result.get("test.clear.property.cache", "not-a-property"));
+			assertEquals(result.get("test.clear.property.cache", "not-a-property"),
+					"Configured property for clearing property cache");
 		} finally {
 			System.setProperty("user.home", originalUserHome);
 		}
