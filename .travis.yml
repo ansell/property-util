@@ -20,8 +20,9 @@ matrix:
 # Java 11 "Oracle JDK"
     - env: JDK='Oracle JDK 11'
       install: . ./install-jdk.sh -F 11 -L BCL
-# The following environments are known to fail
+# The following environments are known to fail due to Jacoco/ASM updates pending
   allow_failures:
+    - env: JDK='Oracle JDK 10'
     - env: JDK='Oracle JDK 11'
 
 notifications:
