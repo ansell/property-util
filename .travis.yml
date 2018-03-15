@@ -1,10 +1,32 @@
 language: java
+sudo: false
 dist: trusty
-jdk:
-  - oraclejdk8
-  - oraclejdk9
+
+# Get latest install-jdk.sh script
+before_install:
+- wget https://raw.githubusercontent.com/sormuras/bach/master/install-jdk.sh
+
+matrix:
+  include:
+# Java 8 "Oracle JDK" (provided by Travis CI)
+    - jdk: oraclejdk8
+      env: JDK='Oracle JDK 8'
+# Java 9 "Oracle JDK" (provided by Travis CI)
+    - jdk: oraclejdk9
+      env: JDK='Oracle JDK 9'
+# Java 10 "Oracle JDK"
+    - env: JDK='Oracle JDK 10'
+      install: . ./install-jdk.sh -F 10 -L BCL
+# Java 11 "Oracle JDK"
+    - env: JDK='Oracle JDK 11'
+      install: . ./install-jdk.sh -F 11 -L BCL
+# The following environments are known to fail
+  allow_failures:
+    - env: JDK='Oracle JDK 11'
+
 notifications:
   email:
     - ansell.peter@gmail.com
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+# Report coverage for JDK8
+  - test "${JDK}" = "Oracle JDK 8" && mvn clean test jacoco:report coveralls:report || true
